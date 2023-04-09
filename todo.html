@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+</head>
+  
+  <input id="task-title" type="text"/>
+  <input id="task-date" type = "date"/>
+  <button onclick = "addToDo()">ADD</button>
+  <div id="todo-list">
+
+  </div>
+  <script>
+    //Model
+    let todos = [{
+      title:"Sweep the floor",
+      date:"2023-11-12",
+      id: "t1"},{
+      title:"Clean the dishes",
+      date:"2023-11-12",
+      id:"t2"},{
+      title:"Wash the clothes",
+      date:"2023-11-12",
+      id:"t3"}]
+
+    
+    function createToDo(title, date){
+      const id = new Date().getTime();
+      todos.push({title: title,date: date, id:toString(id)})
+      render()
+    }
+
+    function removeToDo(id){
+      todos = todos.filter((todo)=>{
+        if (todo.id === id){
+          return false;
+        } else {
+          return true;
+        }
+      })
+      render()
+    }
+
+    //Controller
+    //create new todo
+    function addToDo() {
+      let textinput = document.getElementById('task-title')
+      let title = textinput.value
+      let dateinput = document.getElementById('task-date')
+      let date = dateinput.value
+      createToDo(title,date)
+      
+    }
+    
+    //delete a todo
+    function deleteTodo(event){
+      const deleteButton = event.target
+      const deleteId = deleteButton.id
+      removeToDo(deleteId)
+    }
+
+    //View
+    function render(){
+      document.getElementById('todo-list').innerHTML = ''
+      todos.forEach(function (task) {
+      let element = document.createElement('div')
+      element.innerText = "Task: " + task.title + " - Due date: " + task.date
+      let toDoList = document.getElementById('todo-list')
+      toDoList.appendChild(element)
+      const deleteButton = document.createElement('button')
+      deleteButton.innerText = "Delete"
+      element.appendChild(deleteButton)
+      deleteButton.id = task.id
+      deleteButton.onclick = deleteTodo;
+      deleteButton.style = 'margin-left:12px;background-color:red;color:white';
+    })
+    }
+
+    render()
+    //changes
+  </script>
+</body>
+</html>
